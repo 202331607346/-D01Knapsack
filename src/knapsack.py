@@ -1,19 +1,23 @@
-# D{0-1}背包动态规划求解
-def d01_knapsack_solve(itemsets, capacity):
-    # 初始化dp数组
-    dp = [0] * (capacity + 1)
-    selected = []  # 记录选择结果
+def dp_solve(weights, values, capacity):
+    """
+    动态规划求解0-1背包问题
+    :param weights: 物品重量列表
+    :param values: 物品价值列表
+    :param capacity: 背包容量
+    :return: 最大价值
+    """
+    n = len(weights)
+    # 创建dp数组，dp[i][j]表示前i个物品，容量j时的最大价值
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
 
-    # 遍历每个项集（3个物品为一组）
-    for idx, (w1, v1, w2, v2, w3, v3) in enumerate(itemsets):
-        # 逆序遍历防止重复选择
-        for j in range(capacity, -1, -1):
-            opt = [0]  # 不选
-            if j >= w1:
-                opt.append(dp[j - w1] + v1)
-            if j >= w2:
-                opt.append(dp[j - w2] + v2)
-            if j >= w3:
-                opt.append(dp[j - w3] + v3)
-            dp[j] = max(opt)
-    return dp[capacity], dp
+    # 动态规划填表
+    for i in range(1, n + 1):
+        for j in range(1, capacity + 1):
+            if weights[i - 1] <= j:
+                # 选或不选当前物品，取最大值
+                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weights[i - 1]] + values[i - 1])
+            else:
+                # 无法选当前物品
+                dp[i][j] = dp[i - 1][j]
+
+    return dp[n][capacity]
