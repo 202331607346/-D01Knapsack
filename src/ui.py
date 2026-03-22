@@ -5,11 +5,11 @@ import time
 
 
 class KnapsackUI:
-    def __init__(self, root, solver, reader, saver, drawer):
+    def __init__(self, root, solver, read, saver, drawer):
         self.root = root
         self.root.title("D{0-1}背包问题求解器")
         self.solver = solver  # 动态规划函数
-        self.reader = reader  # read_data 函数
+        self.read = read  # read_data 函数
         self.saver = saver  # save_txt 函数
         self.drawer = drawer  # draw_scatter 函数
 
@@ -29,7 +29,7 @@ class KnapsackUI:
 
     def load_file(self):
         path = filedialog.askopenfilename()
-        self.capacity, self.data = self.reader(path)
+        self.capacity, self.data = self.read(path)
         messagebox.showinfo("成功", "数据加载完成")
 
     def draw_plot(self):
